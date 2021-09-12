@@ -126,7 +126,7 @@ show_on_map <- function(df){
   
 }
 
-map_data_by_county <- function(income_lvl){
+get_data <- function(income_lvl){
   # Get API key, data, etc.
   # initialize_data()
   
@@ -140,10 +140,28 @@ map_data_by_county <- function(income_lvl){
   gis_data <- gis_data[order(gis_data$NAME),]
   
   df <- add_donation_data_to_geom(gis_data, irs_df)
-
-  df[df$NAME == "Salt Lake County",]
   print(df)
-  show_on_map(df)
-  
+  return(df)
 }
-map_data_by_county(5)
+
+income_lvl <- 6
+
+df <- get_data(income_lvl)
+top_6_perct_donated <- head(df[order(df$perct_amt_income_donated),])$NAME
+top_6_perct_w_donations <- head(df[order(df$perct_returns_w_donations),])$NAME
+top_6_perct_donated
+top_6_perct_w_donations
+show_on_map(df)
+
+total_returns <- sum(import_donation_data()$num_returns[import_donation_data()$county_name == "Utah"] )
+total_pop <- sum(gis_data$estimate)
+perct_pop_w_returns <- (total_returns / total_pop) * 100
+perct_pop_w_returns
+# What I'd like to know:
+
+# - Which income levels donate the highest % of their income on donations?
+# - Which income levels donate the most? (perct_returns_w_donations)
+# - Is there a relationship between other factors and high levels of donations? 
+      #(religious communities, political party, etc.)
+# - Are the counties that donate the highest % of their income also donating the most across the county population?
+# - Percentage of population in this income level in this county** - must account for age and who does tax returns
