@@ -3,22 +3,22 @@
     "path": "~/Documents/R Workspace/charitable-donations-per-country/census-mapping-tutorial.R",
     "project_path": "census-mapping-tutorial.R",
     "type": "r_source",
-    "hash": "0",
+    "hash": "2015976274",
     "contents": "",
     "dirty": false,
     "created": 1609008259020.0,
     "source_on_save": false,
     "relative_order": 1,
     "properties": {
-        "cursorPosition": "63,0",
-        "scrollLine": "54"
+        "cursorPosition": "51,0",
+        "scrollLine": "28"
     },
     "folds": "",
-    "lastKnownWriteTime": 1631418649,
+    "lastKnownWriteTime": 1631423987,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1631418649659,
+    "last_content_update": 1631423987262,
     "read_only": false,
     "read_only_alternatives": []
 }

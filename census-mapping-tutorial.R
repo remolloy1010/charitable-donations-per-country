@@ -35,7 +35,7 @@ census_api_key("37ac73a1c944172445bf6a7366224526db63ac38", overwrite=TRUE)
 
 # Viewing census data variables:
 v17 <- load_variables(2017, "acs5", cache = TRUE)
-View(v17)
+
 
 utah_pop <- get_acs(geography = "county", 
                     variables = "B01003_001", 

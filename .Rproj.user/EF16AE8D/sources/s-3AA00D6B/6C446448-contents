@@ -7,7 +7,11 @@ library(sf)
 library(tidyverse)
 library(tidycensus)
 
-initialize <- function(){
+## TO DO:
+# - update to in the thousands and add dollar sign to labels
+# - clean up code
+
+initialize_data <- function(){
   # Install API key to get access to census data
   # Source: https://api.census.gov/data/key_signup.html
   api.key.install(key="0b5de1b0030f5b45d191c313a872de3a1ba1c362")
@@ -56,7 +60,7 @@ import_donation_data <- function(){
   adj_gross_income <- df_csv$A00100
   num_returns_w_total_income <- df_csv$N02650
   total_income_amt <- df_csv$A02650
-  num_returns_donations <- df_csv$N19700
+  num_returns_w_donations <- df_csv$N19700
   total_amt_donations <- df_csv$A19700
   
   utah_df <- data.frame(state_fips,
@@ -69,8 +73,13 @@ import_donation_data <- function(){
                         adj_gross_income,
                         num_returns_w_total_income,
                         total_income_amt,
-                        num_returns_donations,
+                        num_returns_w_donations,
                         total_amt_donations)
+  utah_df$perct_amt_income_donated <- as.integer(
+    (utah_df$total_amt_donations / utah_df$total_income_amt) * 100)
+  utah_df$perct_returns_w_donations <- as.integer(
+    (utah_df$num_returns_w_donations / utah_df$num_returns_w_total_income) * 100)
+  
   return(utah_df)
 }
 
@@ -81,23 +90,23 @@ filter_on_income_level <- function(df, income_val){
   df <- df_income_lvl[df_income_lvl$county_name != "Utah",]
   return(df)
 }
-irs_df <- filter_on_income_level(import_donation_data(), 5)
-irs_df <- irs_df[order(irs_df$county_name),]
-
-
-gis_data <- get_county_geom_data() %>%
-  mutate(NAME = gsub(", Utah", "", NAME))
-
-gis_data <- gis_data[order(gis_data$NAME),]
 
 add_donation_data_to_geom <- function(gis_df, irs_df){
   gis_df$total_amt_donations <- irs_df$total_amt_donations
+  gis_df$perct_amt_income_donated <- irs_df$perct_amt_income_donated
+  gis_df$perct_returns_w_donations <- irs_df$perct_returns_w_donations
+  gis_df$num_returns <- irs_df$num_returns
+  gis_df$num_returns_w_total_income <- irs_df$num_returns_w_total_income
+  gis_df$total_income_amt <- irs_df$total_income_amt
+  gis_df$adj_gross_income <- irs_df$adj_gross_income
   return(gis_df)
 }
-df <- add_donation_data_to_geom(gis_data, irs_df)
-df
+
 
 show_on_map <- function(df){
+  
+  pal <- colorNumeric(palette = "plasma", 
+                      domain = df$perct_returns_w_donations)
   # Show on map
   df %>%
     st_transform(crs = "+init=epsg:4326") %>%
@@ -107,13 +116,34 @@ show_on_map <- function(df){
                 stroke = FALSE,
                 smoothFactor = 0,
                 fillOpacity = 0.7,
-                color = ~ pal(total_amt_donations)) %>%
+                color = ~ pal(perct_returns_w_donations)) %>%
     addLegend("bottomright",
               pal = pal,
-              values = ~ total_amt_donations,
+              values = ~ perct_returns_w_donations,
               title = "Total Donations by County",
               opacity = 1)
+
   
 }
-show_on_map(df)
-df[df$NAME == "Rich County",]
+
+map_data_by_county <- function(income_lvl){
+  # Get API key, data, etc.
+  # initialize_data()
+  
+  # Get IRS data
+  irs_df <- filter_on_income_level(import_donation_data(), income_lvl)
+  irs_df <- irs_df[order(irs_df$county_name),]
+  
+  # Get GIS data
+  gis_data <- get_county_geom_data() %>%
+    mutate(NAME = gsub(", Utah", "", NAME))
+  gis_data <- gis_data[order(gis_data$NAME),]
+  
+  df <- add_donation_data_to_geom(gis_data, irs_df)
+
+  df[df$NAME == "Salt Lake County",]
+  print(df)
+  show_on_map(df)
+  
+}
+map_data_by_county(5)
