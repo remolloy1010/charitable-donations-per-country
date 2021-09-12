@@ -1,0 +1,25 @@
+{
+    "id": "6C446448",
+    "path": "~/Documents/R Workspace/charitable-donations-per-country/global.R",
+    "project_path": "global.R",
+    "type": "r_source",
+    "hash": "3900798700",
+    "contents": "",
+    "dirty": false,
+    "created": 1631418418727.0,
+    "source_on_save": false,
+    "relative_order": 4,
+    "properties": {
+        "tempName": "Untitled1",
+        "cursorPosition": "119,0",
+        "scrollLine": "90"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1631420074,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1631420074372,
+    "read_only": false,
+    "read_only_alternatives": []
+}

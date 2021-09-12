@@ -41,7 +41,14 @@ utah_pop <- get_acs(geography = "county",
                     variables = "B01003_001", 
                     state = "UT",
                     geometry = TRUE)
-
+utah_pop$geometry
+utah_pop$donations <- rep('NA', 29)
+utah_pop
+utah_pop$NAME
+df_filtered_5
+utah_gis_df <- data.frame('NAME'=utah_pop$NAME)
+utah_gis_df
+utah_pop
 pal <- colorNumeric(palette = "plasma", 
                     domain = utah_pop$estimate)
 
@@ -53,7 +60,7 @@ utah_pop$state_id <- state_id
 utah_pop$county_id <- county_id
 
 utah_pop
-
+head(df_filtered_5)
 # Show on map
 utah_pop %>%
   st_transform(crs = "+init=epsg:4326") %>%
@@ -111,26 +118,37 @@ utah_df <- data.frame(state_fips,
                       total_income_amt,
                       num_returns_donations,
                       total_amt_donations)
-
+utah_df
 df_filtered_5 <- filter(utah_df, adj_gross_income_id==5)
+
+df_filtered_5$county_fips
+df2_utah_pop <- data.frame(utah_pop)
+
+df_filtered_5
+df2_utah_pop
+
+df$Var1 <- mapply(function(day, col) df2[df2$date==day, as.character(col)], day=df$date, col=df$X1)
+
 data.frame(utah_pop)
+df2_utah_pop$county_id
 for(row in df_filtered_5){
-  for(subrow in data.frame(utah_pop)){
+  for(subrow in df2_utah_pop){
     print(subrow)
     print(df_filtered_5$county_fips[row])
-    print(utah_pop$county_id[subrow])
-    if(subrow == row){
-      print('found_match!')
-      print(row)
-      print(subrow)
-    }
+    print(df2_utah_pop$county_id[subrow])
+    # if(subrow == row){
+    #   print('found_match!')
+    #   print(row)
+    #   print(subrow)
+    # }
   }
 }
 
-utah_df
+map(utah_df,"state_fips")
 ifelse(sapply(county_fips, function(i) { county_fips  } ))
 
 for(id in county_fips){
   print(id)
   if(length(as.numeric(id)) == 2){}
 }
+
