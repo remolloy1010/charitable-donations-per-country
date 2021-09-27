@@ -34,7 +34,7 @@ initialize_data <- function(){
   # Viewing census data variables:
   v17 <- load_variables(2017, "acs5", cache = TRUE)
 }
-initialize_data()
+
 get_county_geom_data <- function(){
   
   utah_pop <- get_acs(geography = "county", 
@@ -192,7 +192,6 @@ tb <-
     "Income Level" = NA,
     "County Name" = NA,
     "% of Income Donated" = NA,
-    "Total Amt Donated" =NA,
     "Population" = NA,
     "Total # of Donations" = NA,
     "% of Returns with Donations" = NA,
@@ -209,7 +208,6 @@ for(income_lvl in c(2:8)){
       "Income Level" = rep(income_lvl, nrow(df)),
       "County Name" = df$NAME,
       "% of Income Donated" = df$perct_amt_income_donated,
-      "Total Amt Donated" = df$total_amt_donations,
       "Population" = df$estimate,
       "Total # of Donations" = df$total_amt_donations,
       "% of Returns with Donations" = df$perct_returns_w_donations,
@@ -223,16 +221,6 @@ for(income_lvl in c(2:8)){
   
   print(tb)
 }
-?corrplot
-library(GGally)
-library(ggplot2)
-
-ggpairs(tb_nocounty, title="correlogram with ggpairs()") 
-
-tb_nocounty <- tb %>% select(-c(`County Name`))
-
-tb_nocounty
-tb[tb$`County Name` == "Cache County",]
 summary(tb)
 tb <- tb %>%
   group_by(`Income Level`) %>%
@@ -269,24 +257,7 @@ ggplot(data=tb[tb$`Income Level` == income_lvl,],
 # num of dependents
 # gross income
 # num of returns
-# % of pop in each income lvl category
-
-# Objective: Create a model to predict what factors influence how much a county donates 
-# Scope: state of Utah
-# Dependent (predictor) variable: Total Amt Donated
-# Independent (features) variables: Pop. size, income lvl, adj. gross income, # of dependents, political affiliation, religious affiliation
-# Num of returns
 tb[tb$`Income Level` == income_lvl,]
-tb
-x <- tb$`Total Income Amt`
-y <- tb$`Total Amt Donated`
-lm(y ~ x)
-library(ggpubr)
 
-ggplot(tb, aes(x=`Total Income Amt`, y=`Total Amt Donated`)) +
-  geom_point() +
-  geom_smooth(method = "lm", se=FALSE) +
-  stat_regline_equation(label.y.npc = "top", aes(label = ..eq.label..)) +
-  stat_regline_equation(label.y.npc = "center", aes(label = ..rr.label..))
-  # xlim(0, 3000000)
-  # ylim(0, 50000)
+# income_1  income_2  income_3
+

@@ -3,7 +3,7 @@
     "path": "~/Documents/R Workspace/charitable-donations-per-country/global.R",
     "project_path": "global.R",
     "type": "r_source",
-    "hash": "2926019572",
+    "hash": "0",
     "contents": "",
     "dirty": false,
     "created": 1631418418727.0,
@@ -11,15 +11,15 @@
     "relative_order": 4,
     "properties": {
         "tempName": "Untitled1",
-        "cursorPosition": "159,0",
-        "scrollLine": "135"
+        "cursorPosition": "280,26",
+        "scrollLine": "264"
     },
     "folds": "",
-    "lastKnownWriteTime": 1631427394,
+    "lastKnownWriteTime": 1632707167,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1631427394684,
+    "last_content_update": 1632707167591,
     "read_only": false,
     "read_only_alternatives": []
 }
